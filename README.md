@@ -23,3 +23,4 @@ You'll get all files with selected photos renamed to it's original in directory 
 There is "input.csv" which contains file, path, md5(file)
 
 # Thanks
+@11x256
