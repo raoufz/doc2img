@@ -1,0 +1,3 @@
+docx2txt
+pywin32
+func_timeout
