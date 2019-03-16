@@ -10,6 +10,14 @@ import hashlib
 from pathlib import Path
 import docx2txt
 
+def startInitalize():
+	os.system("taskkill /f /IM WINWORD.exe")
+	dirs=['images','input','results']
+	if os.path.isfile("input.csv"):
+		os.remove("input.csv") 
+	for i in dirs:
+		os.makedirs(i)
+
 def copy2dest(fileTypes,destFolder):
 	print('Copying all document file to "input" Folder\n')
 	id=0
@@ -109,6 +117,8 @@ def main():
 	fileTypes = [glob(e, recursive=True) for e in [partition+":\\**\\*.doc",partition+":\\**\\*.docx"]]
 	destFolder = os.path.join(ABS_PATH+"\\input\\")
 	
+	#Remove Old folders from last Iteration, and Creating empty directories
+	startInitalize()
 	# Copy selected files to destination folder
 	copy2dest(fileTypes,destFolder)
 	
