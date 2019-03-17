@@ -9,6 +9,7 @@ import pythoncom
 import hashlib
 from pathlib import Path
 import docx2txt
+import time
 
 def startInitalize():
 	os.system("taskkill /f /IM WINWORD.exe")
@@ -58,14 +59,20 @@ def save_as_docx(absPath):
 def doc2docx(destFolder):
 	print("Converting doc files to docx Files\n")
 	paths = glob(destFolder+'*.doc')
+	c=0
 	for absPath in paths:
+		if c>250:
+			os.system("taskkill /f /IM WINWORD.exe")
+			time.sleep(5)
+			c=0
 		try:
 			func_timeout(15, save_as_docx, args=(absPath,))
 		except FunctionTimedOut:
-			print("save_as_docx('path') could not complete within 15 seconds and was terminated\n")
+			print("save_as_docx('"+absPath+") could not complete within 15 seconds and was terminated\n")
 		except Exception as e:
 			print(absPath,": ",str(e))
 			pass
+		c+=1
 
 
 def extract_image(ABS_PATH):
@@ -101,11 +108,15 @@ def img2doc():
 		for id in l:
 			if str(id)==line.split(",")[0]:
 				newName=line.split(",")[1]
+
 				if not newName.startswith('~$'):
+					try:
 						if os.path.isfile("input\\"+id+".doc"):
 							os.rename("input\\"+id+".doc","input\\"+newName)
 						else:
 							os.rename("input\\"+id+".docx","input\\"+newName)
+					except:
+						pass
 	f.close()
 			
 			
