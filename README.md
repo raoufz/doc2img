@@ -12,6 +12,8 @@ python findall.py
 ```
 
 ## Usage
+Install Python 3.7 and add pip to path
+
 from forensics perspective: Mount Image with FTK Imager Lite and set 'Mount Method' as 'FileSystem / Read Only'
 
 It starts with asking which Partition you would like
