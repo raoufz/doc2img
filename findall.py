@@ -26,17 +26,20 @@ def copy2dest(fileTypes,destFolder):
 	f=open("input.csv",'w',encoding="utf-8")
 	for type in fileTypes:
 		for file in type:
-			fileHash = hashlib.md5(open(file,'rb').read()).hexdigest()
-			if fileHash in hashlist:
-				continue
-			hashlist.append(fileHash)
-			if "docx" in file:
-				shutil.copy(file, destFolder+str(id)+".docx")
-			else:
-				shutil.copy(file, destFolder+str(id)+".doc")
-			a,b=os.path.split(file)
-			f.write((str(id)+","+b+","+a+","+fileHash+"\n"))
-			id+=1
+			try:
+				fileHash = hashlib.md5(open(file,'rb').read()).hexdigest()
+				if fileHash in hashlist:
+					continue
+				hashlist.append(fileHash)
+				if "docx" in file:
+					shutil.copy(file, destFolder+str(id)+".docx")
+				else:
+					shutil.copy(file, destFolder+str(id)+".doc")
+				a,b=os.path.split(file)
+				f.write((str(id)+","+b+","+a+","+fileHash+"\n"))
+				id+=1
+			except:
+				pass
 	f.close()
 
 def save_as_docx(absPath):
@@ -61,15 +64,16 @@ def doc2docx(destFolder):
 	paths = glob(destFolder+'*.doc')
 	c=0
 	for absPath in paths:
-		if c>250:
+		if c>200:
 			os.system("taskkill /f /IM WINWORD.exe")
-			time.sleep(5)
+			time.sleep(2)
 			c=0
 		try:
 			func_timeout(15, save_as_docx, args=(absPath,))
 		except FunctionTimedOut:
 			print("save_as_docx('"+absPath+") could not complete within 15 seconds and was terminated\n")
 		except Exception as e:
+			time.sleep(2)
 			print(absPath,": ",str(e))
 			pass
 		c+=1
