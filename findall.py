@@ -73,6 +73,7 @@ def doc2docx(destFolder):
 		except FunctionTimedOut:
 			print("save_as_docx('"+absPath+") could not complete within 15 seconds and was terminated\n")
 		except Exception as e:
+			os.system("taskkill /f /IM WINWORD.exe")
 			time.sleep(2)
 			print(absPath,": ",str(e))
 			pass
